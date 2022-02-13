@@ -50,9 +50,9 @@ python main.py --arch resnet18 --corruption snow --severity 5 --pseudo_iters 500
 
 #### Output:
 
-(in-distribution test error, in-distribution ProjNorm value)
+(```in-distribution test error```, ```in-distribution ProjNorm value```)
 
-(out-of-distribution test error, out-of-distribution ProjNorm value)
+(```out-of-distribution test error```, ```out-of-distribution ProjNorm value```)
 
 ## Reference
 For more experimental and technical details, please check our [paper](https://arxiv.org/abs/todo). If you find this useful for your work, please consider citing
