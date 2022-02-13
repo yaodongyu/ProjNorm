@@ -31,6 +31,8 @@ python init_ref_model.py --arch resnet18 --train_epoch 20 --pseudo_iters 500 --l
 * ```batch_size```: mini-batch size
 * ```seed```: random seed
 
+#### Output:
+
 The base model (```base_model```) and reference model (```reference_model```) are saved to ```'./checkpoints/{}'.format(arch)```.
 
 ### Step 2: Compute ProjNorm for in-distribution data and out-of-distribution data
@@ -38,6 +40,7 @@ The base model (```base_model```) and reference model (```reference_model```) ar
 python main.py --arch resnet18 --corruption snow --severity 5 --pseudo_iters 500 --lr 0.001 --batch_size 128 --seed 1
 ```
 #### Arguments:
+* ```arch```: network architecture (apply the same architecture as in **Step 1**)
 * ```corruption```: corruption type
 * ```severity```: corruption severity
 * ```pseudo_iters```: number of iterations for training the reference model
@@ -45,7 +48,8 @@ python main.py --arch resnet18 --corruption snow --severity 5 --pseudo_iters 500
 * ```batch_size```: mini-batch size
 * ```seed```: random seed (apply the same random seed as in **Step 1**)
 
-####Output:
+#### Output:
+
 (in-distribution test error, in-distribution ProjNorm value)
 
 (out-of-distribution test error, out-of-distribution ProjNorm value)
