@@ -1,6 +1,6 @@
 # Projection Norm (ProjNorm)
 
-This is the code for the [paper](https://arxiv.org/abs/todo) "Predicting Out-of-Distribution Error with the Projection Norm" by Yaodong Yu*, Zitong Yang*, Alexander Wei, Yi Ma, Jacob Steinhardt from UC Berkeley (*equal contribution).
+This is the code for the [paper](https://arxiv.org/abs/2202.05834) "Predicting Out-of-Distribution Error with the Projection Norm" by Yaodong Yu*, Zitong Yang*, Alexander Wei, Yi Ma, Jacob Steinhardt from UC Berkeley (*equal contribution).
 
 ## Prerequisites
 * Python
@@ -55,12 +55,12 @@ python main.py --arch resnet18 --corruption snow --severity 5 --pseudo_iters 500
 (```out-of-distribution test error```, ```out-of-distribution ProjNorm value```)
 
 ## Reference
-For more experimental and technical details, please check our [paper](https://arxiv.org/abs/todo). If you find this useful for your work, please consider citing
+For more experimental and technical details, please check our [paper](https://arxiv.org/abs/2202.05834). If you find this useful for your work, please consider citing
 ```
 @article{yu2022predicting,
   title={Predicting Out-of-Distribution Error with the Projection Norm},
   author = {Yaodong Yu and Zitong Yang and Alexander Wei and Yi Ma and Jacob Steinhardt},
-  journal={arXiv preprint arXiv:todo},
+  journal={arXiv preprint arXiv:2202.05834},
   year={2022}
 }
 ```
