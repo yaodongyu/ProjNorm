@@ -23,11 +23,13 @@ args = vars(parser.parse_args())
 
 if __name__ == "__main__":
     # setup valset_iid/val_ood loaders
+    random_seeds = torch.randint(0, 10000, (2,))
     valset_iid = load_cifar10_image(corruption_type='clean',
                                     clean_cifar_path=args['cifar_data_path'],
                                     corruption_cifar_path=args['cifar_corruption_path'],
                                     corruption_severity=0,
-                                    datatype='test')
+                                    datatype='test',
+                                    seed=random_seeds[0])
     val_iid_loader = torch.utils.data.DataLoader(valset_iid,
                                                  batch_size=args['batch_size'],
                                                  shuffle=True)
@@ -36,7 +38,8 @@ if __name__ == "__main__":
                                     clean_cifar_path=args['cifar_data_path'],
                                     corruption_cifar_path=args['cifar_corruption_path'],
                                     corruption_severity=args['severity'],
-                                    datatype='test')
+                                    datatype='test',
+                                    seed=random_seeds[1])
     val_ood_loader = torch.utils.data.DataLoader(valset_ood,
                                                  batch_size=args['batch_size'],
                                                  shuffle=True)

@@ -39,41 +39,42 @@ class ProjNorm(torch.nn.Module):
                               weight_decay=0.0)
         scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=pseudo_iters)
         criterion = nn.CrossEntropyLoss().cuda()
+        trainloader_iterator = iter(data_loader)
 
-        iter = 0
-        for epoch in range(1, self.max_epochs + 1):
-
-            if iter >= pseudo_iters:
-                break
-
+        for iteration in range(1, pseudo_iters + 1):
             pseudo_model.train()
-            for _, (inputs, _) in enumerate(data_loader):
-                inputs = inputs.cuda()
-                # pseudo-label by base_model
-                _, pseudo_labels = self.base_model(inputs).max(1)
-                pseudo_labels = pseudo_labels.detach()
 
-                optimizer.zero_grad()
-                outputs = pseudo_model(inputs)
-                loss = criterion(outputs, pseudo_labels)
-                loss.backward()
-                optimizer.step()
-                scheduler.step()
-                train_loss = loss.item() * inputs.size(0)
-                _, predicted = outputs.max(1)
-                total = pseudo_labels.size(0)
-                correct = predicted.eq(pseudo_labels).sum().item()
-                if iter % 20 == 0:
-                    current_lr = 0.0
-                    for param_group in optimizer.param_groups:
-                        current_lr = param_group['lr']
-                    print('iter {}: train loss: {:.6f}, train acc: {:.6f}, current lr: {:.6f}'.format(iter,
-                                                                                                      train_loss / total,
-                                                                                                      correct / total,
-                                                                                                      current_lr))
-                iter += 1
-                if iter >= pseudo_iters:
-                    break
+            try:
+                inputs, targets = next(trainloader_iterator)
+            except StopIteration:
+                trainloader_iterator = iter(data_loader)
+                inputs, targets = next(trainloader_iterator)
+            if iteration == 1:
+                print('targets[:10]:', targets[:10])
+
+            inputs = inputs.cuda()
+            # pseudo-label by base_model
+            _, pseudo_labels = self.base_model(inputs).max(1)
+            pseudo_labels = pseudo_labels.detach()
+
+            optimizer.zero_grad()
+            outputs = pseudo_model(inputs)
+            loss = criterion(outputs, pseudo_labels)
+            loss.backward()
+            optimizer.step()
+            scheduler.step()
+            train_loss = loss.item() * inputs.size(0)
+            _, predicted = outputs.max(1)
+            total = pseudo_labels.size(0)
+            correct = predicted.eq(pseudo_labels).sum().item()
+            if iteration % 20 == 0:
+                current_lr = 0.0
+                for param_group in optimizer.param_groups:
+                    current_lr = param_group['lr']
+                print('iteration {}: train loss: {:.6f}, train acc: {:.6f}, current lr: {:.6f}'.format(iteration,
+                                                                                                       train_loss / total,
+                                                                                                       correct / total,
+                                                                                                       current_lr))
         pseudo_model.eval()
         self.pseudo_model = copy.deepcopy(pseudo_model)
         print('========Pseudo-training finished========')
@@ -85,42 +86,41 @@ class ProjNorm(torch.nn.Module):
                               weight_decay=0.0)
         scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=pseudo_iters)
         criterion = nn.CrossEntropyLoss().cuda()
+        trainloader_iterator = iter(data_loader)
 
-        iter = 0
-        for epoch in range(1, self.max_epochs + 1):
-
-            if iter >= pseudo_iters:
-                break
-
+        for iteration in range(1, pseudo_iters + 1):
             ref_model.train()
-            for _, (inputs, targets) in enumerate(data_loader):
-                inputs, targets = inputs.cuda(), targets.cuda()
-                optimizer.zero_grad()
-                outputs = ref_model(inputs)
-                loss = criterion(outputs, targets)
-                loss.backward()
-                optimizer.step()
-                scheduler.step()
-                train_loss = loss.item() * inputs.size(0)
-                _, predicted = outputs.max(1)
-                total = targets.size(0)
-                correct = predicted.eq(targets).sum().item()
-                if iter % 20 == 0:
-                    current_lr = 0.0
-                    for param_group in optimizer.param_groups:
-                        current_lr = param_group['lr']
-                    print('iter {}: train loss: {:.6f}, train acc: {:.6f}, current lr: {:.6f}'.format(iter,
-                                                                                                      train_loss / total,
-                                                                                                      correct / total,
-                                                                                                      current_lr))
-                iter += 1
-                if iter >= pseudo_iters:
-                    break
+            try:
+                inputs, targets = next(trainloader_iterator)
+            except StopIteration:
+                trainloader_iterator = iter(data_loader)
+                inputs, targets = next(trainloader_iterator)
+            if iteration == 1:
+                print('targets[:10]:', targets[:10])
+            inputs, targets = inputs.cuda(), targets.cuda()
+            optimizer.zero_grad()
+            outputs = ref_model(inputs)
+            loss = criterion(outputs, targets)
+            loss.backward()
+            optimizer.step()
+            scheduler.step()
+
+            train_loss = loss.item() * inputs.size(0)
+            _, predicted = outputs.max(1)
+            total = targets.size(0)
+            correct = predicted.eq(targets).sum().item()
+
+            if iteration % 20 == 0:
+                current_lr = 0.0
+                for param_group in optimizer.param_groups:
+                    current_lr = param_group['lr']
+                print('iteration {}: train loss: {:.6f}, train acc: {:.6f}, current lr: {:.6f}'.format(iteration,
+                                                                                                       train_loss / total,
+                                                                                                       correct / total,
+                                                                                                       current_lr))
         ref_model.eval()
         self.reference_model = copy.deepcopy(ref_model)
         print('========Pseudo-training (reference model) finished========')
 
     def compute_projnorm(self, model_ref, model_ood):
         return _weight_diff_norm_init(model_ref, model_ood)
-
-
