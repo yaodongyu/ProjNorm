@@ -1,8 +1,9 @@
 # Projection Norm (ProjNorm)
 
-This is the code for the [ICML2022 paper](https://arxiv.org/abs/2202.05834) 
+This is the code for the [ICML2022 paper](https://arxiv.org/abs/2202.05834):
 
-"Predicting Out-of-Distribution Error with the Projection Norm" 
+### Predicting Out-of-Distribution Error with the Projection Norm 
+
 by Yaodong Yu*, Zitong Yang*, Alexander Wei, Yi Ma, Jacob Steinhardt from UC Berkeley (*equal contribution).
 
 ## Prerequisites
