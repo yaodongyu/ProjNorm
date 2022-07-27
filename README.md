@@ -61,10 +61,17 @@ python main.py --arch resnet18 --corruption snow --severity 5 --pseudo_iters 500
 ## Reference
 For more experimental and technical details, please check our [paper](https://arxiv.org/abs/2202.05834). If you find this useful for your work, please consider citing
 ```
-@article{yu2022predicting,
-  title={Predicting Out-of-Distribution Error with the Projection Norm},
-  author = {Yaodong Yu and Zitong Yang and Alexander Wei and Yi Ma and Jacob Steinhardt},
-  journal={arXiv preprint arXiv:2202.05834},
-  year={2022}
+@InProceedings{pmlr-v162-yu22i,
+  title = 	 {Predicting Out-of-Distribution Error with the Projection Norm},
+  author =       {Yu, Yaodong and Yang, Zitong and Wei, Alexander and Ma, Yi and Steinhardt, Jacob},
+  booktitle = 	 {Proceedings of the 39th International Conference on Machine Learning},
+  pages = 	 {25721--25746},
+  year = 	 {2022},
+  editor = 	 {Chaudhuri, Kamalika and Jegelka, Stefanie and Song, Le and Szepesvari, Csaba and Niu, Gang and Sabato, Sivan},
+  volume = 	 {162},
+  series = 	 {Proceedings of Machine Learning Research},
+  month = 	 {17--23 Jul},
+  publisher =    {PMLR},
+  pdf = 	 {https://proceedings.mlr.press/v162/yu22i/yu22i.pdf}
 }
 ```
